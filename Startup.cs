@@ -25,7 +25,7 @@ namespace StockExchangeSimulator
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = "Server=(localdb)\\mssqllocaldb;Database=StockExchangeDb;Trusted_Connection=True;";
+            string connectionString = Configuration.GetConnectionString("DefaultConnection");
             services.AddDbContext<EFDBContext>(options => options.UseSqlServer(connectionString));
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -41,12 +41,9 @@ namespace StockExchangeSimulator
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
-
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthorization();
             app.UseAuthentication();
 

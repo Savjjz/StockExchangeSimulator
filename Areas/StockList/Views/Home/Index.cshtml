@@ -1,1 +1,37 @@
-﻿<h2>тут будет список акций</h2>
+﻿@model IEnumerable<DataLayer.Entityes.Stock>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список акций</title>
+</head>
+<body>
+    <h3>Список акций</h3>
+    <table>
+        <tr>
+            <td>Текущая цена</td>
+            <td>Годовая прибыльность</td>
+            <td>Компания</td>
+            <td>Краткое название</td>
+            <td>Страна</td>
+            <td>Размер налога</td>
+            <td></td>
+        </tr>
+        @foreach (var stock in Model)
+        {
+            <tr>
+                <td>@stock.CurrentPrice</td>
+                <td>@stock.YearPorfitability</td>
+                <td>@stock.Company.FullName</td>
+                <td>@stock.Company.ShortName</td>
+                <td>@stock.Company.Country.Name</td>
+                <td>@stock.Company.Country.TaxSize</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>
