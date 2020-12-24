@@ -11,26 +11,24 @@
 </head>
 <body>
     <h3>Список акций</h3>
-    <table>
+    <table class="StockList">
         <tr>
-            <td>Текущая цена</td>
-            <td>Годовая прибыльность</td>
             <td>Компания</td>
             <td>Краткое название</td>
             <td>Страна</td>
-            <td>Размер налога</td>
+            <td>Текущая цена</td>
+            <td>Годовая прибыльность</td>
             <td></td>
         </tr>
         @foreach (var stock in Model)
         {
-            <tr>
-                <td>@stock.CurrentPrice</td>
-                <td>@stock.YearPorfitability</td>
-                <td>@stock.Company.FullName</td>
-                <td>@stock.Company.ShortName</td>
-                <td>@stock.Company.Country.Name</td>
-                <td>@stock.Company.Country.TaxSize</td>
-            </tr>
+        <tr>
+            <td>@stock.Company.FullName</td>
+            <td>@stock.Company.ShortName</td>
+            <td>@stock.Company.Country.Name</td>
+            <td>@stock.CurrentPrice</td>
+            <td>@stock.YearPorfitability %</td>
+        </tr>
         }
     </table>
 </body>

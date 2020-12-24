@@ -3,8 +3,32 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
-
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Список акций</title>
+</head>
+<body>
+    <h3>Список акций</h3>
+    <table class="StockList">
+        <tr>
+            <td>Компания</td>
+            <td>Краткое название</td>
+            <td>Страна</td>
+            <td>Текущая цена</td>
+            <td>Годовая прибыльность</td>
+            <td></td>
+        </tr>
+        @foreach (var stock in Model)
+        {
+            <tr>
+                <td>@stock.Company.FullName</td>
+                <td>@stock.Company.ShortName</td>
+                <td>@stock.Company.Country.Name</td>
+                <td>@stock.CurrentPrice</td>
+                <td>@stock.YearPorfitability %</td>
+            </tr>
+        }
+    </table>
+</body>
+</html>

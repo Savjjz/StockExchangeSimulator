@@ -75,8 +75,6 @@ D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\bin\Debug\netcorea
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\bin\Debug\netcoreapp3.1\DataLayer.dll
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\bin\Debug\netcoreapp3.1\DataLayer.pdb
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\StockList\Views\Home\Index.cshtml.g.cs
-D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\UserAccount\Views\Account\Login.cshtml.g.cs
-D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\UserAccount\Views\Account\Register.cshtml.g.cs
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.Internal.dll
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Cryptography.KeyDerivation.dll
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll
@@ -86,3 +84,4 @@ D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcorea
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\StockExchangeSimulator.MvcApplicationPartsAssemblyInfo.cache
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Views\Account\Login.cshtml.g.cs
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Views\Account\Register.cshtml.g.cs
+D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\UserInterface\Views\UserProfile\ShowUserProfile.cshtml.g.cs
