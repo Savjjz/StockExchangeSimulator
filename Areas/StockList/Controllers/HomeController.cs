@@ -22,12 +22,13 @@ namespace StockExchangeSimulator.Areas.StockList.Controllers
         [Route("[area]")]
         public IActionResult Index()
         {
-            var stocks = dataContext.Stocks
+            /*var stocks = dataContext.Stocks
                 .Include(u => u.Company)
                 .ThenInclude(c => c.Country)
                 .ToList();
 
-            return View(stocks);
+            return View(stocks);*/
+            return View();
         }
     }
 }

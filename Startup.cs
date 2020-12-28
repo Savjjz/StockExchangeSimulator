@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using DataLayer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using DataLayer.Entityes;
 
 namespace StockExchangeSimulator
 {
@@ -25,15 +27,11 @@ namespace StockExchangeSimulator
 
         public void ConfigureServices(IServiceCollection services)
         {
-            string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            services.AddDbContext<EFDBContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<EFDBContext>(options =>
+               options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-                    options.LoginPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                    options.AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Account/Login");
-                });
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<EFDBContext>();
 
             services.AddControllersWithViews();
         }

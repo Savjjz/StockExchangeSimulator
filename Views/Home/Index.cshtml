@@ -16,7 +16,7 @@
             <td>Краткое название</td>
             <td>Страна</td>
             <td>Текущая цена</td>
-            <td>Годовая прибыльность</td>
+            <td>Доходность за 1 год</td>
             <td></td>
         </tr>
         @foreach (var stock in Model)
@@ -26,7 +26,7 @@
                 <td>@stock.Company.ShortName</td>
                 <td>@stock.Company.Country.Name</td>
                 <td>@stock.CurrentPrice</td>
-                <td>@stock.YearPorfitability %</td>
+                <td>@stock.YearPorfitability</td>
             </tr>
         }
     </table>

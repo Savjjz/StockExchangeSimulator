@@ -1,5 +1,7 @@
-﻿@{
+﻿@using System.Security.Claims
+@{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>пользовательский интерфейс</h1>
+<h2>@(User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value)</h2>

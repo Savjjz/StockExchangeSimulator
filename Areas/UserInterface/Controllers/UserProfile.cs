@@ -1,15 +1,17 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace StockExchangeSimulator.Areas.UserInterface.Controllers
 {
     [Area("UserInterface")]
-    public class UserProfile : Controller 
-    {
-        [Route("[area]")]
+    public class UserProfile : Controller
+    { 
+        [Route("Account/[area]")]
         public IActionResult ShowUserProfile()
         {
             return View();
