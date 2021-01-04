@@ -22,7 +22,7 @@
         @foreach (var stock in Model)
         {
             <tr>
-                <td>@stock.Company.FullName</td>
+                <td><a class="nav-link text-dark" asp-controller="StockInfoController" asp-action="ShowStockInfo" asp-route-id="@stock.Id">@stock.Company.FullName</a></td>
                 <td>@stock.Company.ShortName</td>
                 <td>@stock.Company.Country.Name</td>
                 <td>@stock.CurrentPrice</td>

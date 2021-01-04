@@ -1,7 +1,17 @@
-﻿@using System.Security.Claims
+﻿@model StockExchangeSimulator.ViewModels.UserInfoViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>пользовательский интерфейс</h1>
-<h2>@(User.FindFirst(x => x.Type == ClaimsIdentity.DefaultNameClaimType).Value)</h2>
+<h2>@Model.UserName</h2>
+<h2>Баланс на счету: @Model.TotalMoneySum руб.</h2>
+
+<form asp-action="TopUpBalance" asp-controller="UserProfile">
+    <input type="text" asp-for="AddedSum" />
+    <input type="submit" value="Пополнить кошелек" />
+</form>
+
+<h2>*Список акций, которые держит пользователь*</h2>
+<h2>*Статистика по торговле*</h2>

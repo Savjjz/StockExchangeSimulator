@@ -1,0 +1,12 @@
+﻿@model StockExchangeSimulator.ViewModels.StockInfoViewModel
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@Model.CompanyFullName</h1>
+<h2>@Model.CompanyShortName</h2>
+<h2>@Model.CurrentPrice</h2>
+<h2>@Model.YearProfitability</h2>
+<h2>@Model.CountryName</h2>
+<h2>*в будущем здесь будет график роста акции*</h2>
+<input type="submit" value="Добавить в портфель" />

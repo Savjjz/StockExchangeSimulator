@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataLayer;
 using DataLayer.Entityes;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -13,11 +14,13 @@ namespace StockExchangeSimulator.Controllers
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
+        private readonly EFDBContext _dataContext;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, EFDBContext dataContext)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _dataContext = dataContext;
         }
 
         [HttpGet]
@@ -36,6 +39,9 @@ namespace StockExchangeSimulator.Controllers
                 if (result.Succeeded)
                 {
                     await _signInManager.SignInAsync(user, false);
+                    Wallet wallet = new Wallet { TotalSum = 0.0, User = user };
+                    _dataContext.Wallets.Add(wallet);
+                    _dataContext.SaveChanges();
                     return RedirectToAction("Index", "Home");
                 }
                 else
