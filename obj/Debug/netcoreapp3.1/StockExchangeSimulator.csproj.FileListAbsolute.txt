@@ -87,3 +87,5 @@ D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcorea
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\UserInterface\Views\UserProfile\ShowUserProfile.cshtml.g.cs
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\StockPage\Views\StockInfo\ShowStockInfo.cshtml.g.cs
 D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\UserInterface\Views\UserProfile\TopUpBalance.cshtml.g.cs
+D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\StockPage\Views\StockInfo\DealSuccess.cshtml.g.cs
+D:\projects\GitSource\StockExchangeGit\StockExchangeSimulator\obj\Debug\netcoreapp3.1\Razor\Areas\UserInterface\Views\UserProfile\SellOutStock.cshtml.g.cs

@@ -13,5 +13,6 @@ namespace StockExchangeSimulator.ViewModels
         public string CompanyFullName { get; set; }
         public string CompanyShortName { get; set; }
         public string CountryName { get; set; }
+        public int StockNumber { get; set; }
     }
 }

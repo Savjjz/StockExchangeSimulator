@@ -4,7 +4,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>пользовательский интерфейс</h1>
 <h2>@Model.UserName</h2>
 <h2>Баланс на счету: @Model.TotalMoneySum руб.</h2>
 
@@ -13,5 +12,30 @@
     <input type="submit" value="Пополнить кошелек" />
 </form>
 
-<h2>*Список акций, которые держит пользователь*</h2>
-<h2>*Статистика по торговле*</h2>
+<h3>Список акций, которые вы держите в настоящий момент</h3>
+<table class="StockList">
+    <tr>
+        <td>Компания</td>
+        <td>Краткое название</td>
+        <td>Число приобретенных акций</td>
+        <td>Рост акции с момента покупки (руб)</td>
+        <td>Рост акции с момента покупки (%)</td>
+        <td>Продать акции</td>
+    </tr>
+    @foreach(var p in Model.PurchasedStocks)
+    {
+        <tr>
+            <td>@p.CompanyFullName</td>
+            <td>@p.CompanyShortName</td>
+            <td>@p.PurchasedStockNumber</td>
+            <td>@p.StockGrowth</td>
+            <td>@p.StockGrowthInPercent</td>
+            <td>
+                <form asp-action="SellOutStock" asp-controller="UserProfile" asp-route-id="@p.StockId">
+                    <input type="submit" value="продать" />
+                    <input type="number" min="1" max="@p.PurchasedStockNumber" asp-for="StockNumberForSale"/>
+                </form>
+            </td>
+        </tr>
+    }
+</table>

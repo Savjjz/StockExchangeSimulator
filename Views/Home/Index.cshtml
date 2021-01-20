@@ -10,6 +10,16 @@
 </head>
 <body>
     <h3>Список акций</h3>
+    <p>
+        <input maxlength="25" size="30" />
+        <input type="button" value="поиск" />
+        <select size="1">
+            <option disabled>Сортировать по</option>
+            <option>Странам</option>
+            <option>Цене</option>
+            <option>Доходности</option>
+        </select>
+    </p>
     <table class="StockList">
         <tr>
             <td>Компания</td>
@@ -17,7 +27,6 @@
             <td>Страна</td>
             <td>Текущая цена</td>
             <td>Доходность за 1 год</td>
-            <td></td>
         </tr>
         @foreach (var stock in Model)
         {

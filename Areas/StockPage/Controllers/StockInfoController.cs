@@ -10,25 +10,26 @@ using StockExchangeSimulator.ViewModels;
 namespace StockExchangeSimulator.Areas.StockPage.Controllers
 {
     [Area("StockPage")]
-    public class StockInfoController : Controller
+    public class StockInfo : Controller
     {
-        EFDBContext dataContext;
+        EFDBContext _dataContext;
+        static Stock _currentStock;
 
-        public StockInfoController(EFDBContext context)
+        public StockInfo(EFDBContext context)
         {
-            dataContext = context;
+            _dataContext = context;
         }
 
         [Route("StockInfoController/[action]/{id?}")]
         public IActionResult ShowStockInfo(int id)
         {
-            var stocks = dataContext.Stocks.ToList();
-            Stock currentStock = stocks.FirstOrDefault(p => p.Id == id);
+            var stocks = _dataContext.Stocks.ToList();
+            _currentStock = stocks.FirstOrDefault(p => p.Id == id);
             StockInfoViewModel model = new StockInfoViewModel();
 
-            var result = from stock in dataContext.Stocks
-                         join company in dataContext.Companies on stock.CompanyId equals company.Id
-                         join country in dataContext.Countries on company.CountryId equals country.Id
+            var result = from stock in _dataContext.Stocks
+                         join company in _dataContext.Companies on stock.CompanyId equals company.Id
+                         join country in _dataContext.Countries on company.CountryId equals country.Id
                          select new
                          { 
                             Id = stock.Id,
@@ -41,7 +42,7 @@ namespace StockExchangeSimulator.Areas.StockPage.Controllers
 
             foreach (var r in result)
             {
-                if (r.Id == currentStock.Id)
+                if (r.Id == _currentStock.Id)
                 {
                     model.StockId = r.Id;
                     model.CurrentPrice = r.CurrentPrice;
@@ -54,5 +55,40 @@ namespace StockExchangeSimulator.Areas.StockPage.Controllers
 
             return View(model);
         }
+
+        [Route("[Controller]/[Action]")]
+        public IActionResult DealSuccess(StockInfoViewModel model)
+        {
+            var users = _dataContext.Users.ToList();
+            User user = users.FirstOrDefault(p => p.UserName == User.Identity.Name);
+
+            var wallets = _dataContext.Wallets.ToList();
+            Wallet wallet = wallets.FirstOrDefault(p => p.UserId == user.Id);
+
+            int stockId = _currentStock.Id;
+            var stocks = _dataContext.Stocks.ToList();
+            Stock stock = stocks.FirstOrDefault(p => p.Id == stockId);
+
+            if (wallet.TotalSum >= model.StockNumber* _currentStock.CurrentPrice)
+            {
+
+                Deal deal = new Deal
+                {
+                    DealDate = DateTime.Now,
+                    StockId = _currentStock.Id,
+                    Stock = stock,
+                    StockNumber = model.StockNumber,
+                    WalletId = wallet.Id,
+                    Wallet = wallet,
+                    CurrentStockPrice = _currentStock.CurrentPrice,
+                    IsBought = true
+                };
+                _dataContext.Deals.Add(deal);
+                wallet.TotalSum -= model.StockNumber * _currentStock.CurrentPrice;
+                _dataContext.SaveChanges();
+            }
+            return View();
+        }
+
     }
 }

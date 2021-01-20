@@ -22,13 +22,13 @@
         </tr>
         @foreach (var stock in Model)
         {
-        <tr>
-            <td>@stock.Company.FullName</td>
-            <td>@stock.Company.ShortName</td>
-            <td>@stock.Company.Country.Name</td>
-            <td>@stock.CurrentPrice</td>
-            <td>@stock.YearPorfitability %</td>
-        </tr>
+            <tr>
+                <td>@stock.Company.FullName</td>
+                <td>@stock.Company.ShortName</td>
+                <td>@stock.Company.Country.Name</td>
+                <td>@stock.CurrentPrice</td>
+                <td>@stock.YearPorfitability %</td>
+            </tr>
         }
     </table>
 </body>
