@@ -15,12 +15,12 @@
 <h3>Список акций, которые вы держите в настоящий момент</h3>
 <table class="StockList">
     <tr>
-        <td>Компания</td>
-        <td>Краткое название</td>
-        <td>Число приобретенных акций</td>
-        <td>Рост акции с момента покупки (руб)</td>
-        <td>Рост акции с момента покупки (%)</td>
-        <td>Продать акции</td>
+        <th>Компания</th>
+        <th>Краткое название</th>
+        <th>Число приобретенных акций</th>
+        <th>Рост акции с момента покупки (руб)</th>
+        <th>Рост акции с момента покупки (%)</th>
+        <th>Продать акции</th>
     </tr>
     @foreach(var p in Model.PurchasedStocks)
     {
@@ -36,6 +36,26 @@
                     <input type="number" min="1" max="@p.PurchasedStockNumber" asp-for="StockNumberForSale"/>
                 </form>
             </td>
+        </tr>
+    }
+</table>
+<h3>История сделок</h3>
+<table class="StockList">
+    <tr>
+        <th>Компания</th>
+        <th>Краткое название</th>
+        <td>Покупка/продажа</td>
+        <td>Число купленных/проданных акций</td>
+        <td>Дата сделки</td>
+    </tr>
+    @foreach(var d in Model.DealsDetails)
+    {
+        <tr>
+            <td>@d.CompanyName</td>
+            <td>@d.CompanyShortName</td>
+            <td>@d.IsBought</td>
+            <td>@d.StockNumberInDeal</td>
+            <td>@d.DealDate</td>
         </tr>
     }
 </table>

@@ -26,66 +26,57 @@ namespace StockExchangeSimulator.Areas.UserInterface.Controllers
         [Route("Account/[area]")]
         public IActionResult ShowUserProfile()
         {
-            //Получаем данные о текущем пользователе из БД
-            var users = _dataContext.Users.ToList();
+            var users = _dataContext.Users.Include(x => x.Wallet).ThenInclude(y => y.Deals).ThenInclude(z => z.Stock).ThenInclude(t => t.Company);
             User currentUser = users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            //Получаем кошелек текущего пользователя из БД
-            var wallets = _dataContext.Wallets.ToList();
-            Wallet currentWallet = wallets.FirstOrDefault(p => p.UserId == currentUser.Id);
-
-            UserInfoViewModel model = new UserInfoViewModel()
+            UserInfoViewModel model = new UserInfoViewModel
             {
                 Id = currentUser.Id,
                 UserName = currentUser.UserName,
-                TotalMoneySum = currentWallet.TotalSum
+                TotalMoneySum = currentUser.Wallet.TotalSum
             };
-            //Список сделок в бд
-            var deals = _dataContext.Deals.ToList();
-            //Список акций в бд
-            var stocks = _dataContext.Stocks.ToList();
-            //Список компаний в бд
-            var companies = _dataContext.Companies.ToList();
-            //Подробности о сделке, промежуточный список
             List<PurchasedStock> purchasedStocks = new List<PurchasedStock>();
-
-            foreach(var deal in deals)
+            foreach (var deal in currentUser.Wallet.Deals)
             {
-                //Находим сделку, которая принадлежит текущему кошельку и добавляем ее в список
-                if (deal.WalletId == currentWallet.Id)
+                PurchasedStock purchasedStock = new PurchasedStock
                 {
-                    Stock stock = stocks.FirstOrDefault(p => p.Id == deal.StockId);
-                    Company company = companies.FirstOrDefault(p => p.Id == stock.CompanyId);
-                    PurchasedStock purchasedStock = new PurchasedStock()
-                    {
-                        StockId = stock.Id,
-                        CompanyFullName = company.FullName,
-                        CompanyShortName = company.ShortName,
-                        PurchasedStockNumber = deal.StockNumber,
-                        StockGrowth = stock.CurrentPrice - deal.CurrentStockPrice,
-                        StockGrowthInPercent = (stock.CurrentPrice - deal.CurrentStockPrice) / stock.CurrentPrice * 100
-                    };
-                    purchasedStocks.Add(purchasedStock);
-                }
+                    StockId = deal.Stock.Id,
+                    CompanyFullName = deal.Stock.Company.FullName,
+                    CompanyShortName = deal.Stock.Company.ShortName,
+                    PurchasedStockNumber = deal.StockNumber,
+                    StockGrowth = deal.Stock.CurrentPrice - deal.CurrentStockPrice,
+                    StockGrowthInPercent = (deal.Stock.CurrentPrice - deal.CurrentStockPrice) / deal.Stock.CurrentPrice * 100
+                };
+                purchasedStocks.Add(purchasedStock);
             }
-            //Находим количество акций в сделках с повторяющейся акцией 
-            foreach(var i in purchasedStocks)
+            foreach (var p in purchasedStocks)
             {
-                PurchasedStock purchasedStock = new PurchasedStock()
+                PurchasedStock purchasedStock = new PurchasedStock
                 {
-                    StockId = i.StockId,
-                    CompanyFullName = i.CompanyFullName,
-                    CompanyShortName = i.CompanyShortName,
-                    StockGrowth = i.StockGrowth,
-                    StockGrowthInPercent = i.StockGrowthInPercent,
+                    StockId = p.StockId,
+                    CompanyFullName = p.CompanyFullName,
+                    CompanyShortName = p.CompanyShortName,
+                    StockGrowth = p.StockGrowth,
+                    StockGrowthInPercent = p.StockGrowthInPercent,
                     PurchasedStockNumber = 0
                 };
-                foreach (var j in purchasedStocks)
-                    if (i.CompanyShortName == j.CompanyShortName)
-                        purchasedStock.PurchasedStockNumber += j.PurchasedStockNumber;
+                foreach (var t in purchasedStocks)
+                    if (p.CompanyShortName == t.CompanyShortName)
+                        purchasedStock.PurchasedStockNumber += t.PurchasedStockNumber;
                 model.PurchasedStocks.Add(purchasedStock);
             }
-            //Удаляем повторения
             model.PurchasedStocks = model.PurchasedStocks.GroupBy(x => x.CompanyShortName).Select(x => x.First()).ToList();
+            foreach (var deal in currentUser.Wallet.Deals)
+            {
+                DealDetails dealDetails = new DealDetails
+                {
+                    CompanyName = deal.Stock.Company.FullName,
+                    CompanyShortName = deal.Stock.Company.ShortName,
+                    IsBought = deal.IsBought,
+                    DealDate = deal.DealDate,
+                    StockNumberInDeal = deal.StockNumber
+                };
+                model.DealsDetails.Add(dealDetails);
+            }
             return View(model);
         }
 
@@ -93,13 +84,10 @@ namespace StockExchangeSimulator.Areas.UserInterface.Controllers
         public IActionResult TopUpBalance(UserInfoViewModel model)
         {
             //Находим в бд текущего пользователя
-            var users = _dataContext.Users.ToList();
+            var users = _dataContext.Users.Include(x => x.Wallet).ToList();
             User currentUser = users.FirstOrDefault(p => p.UserName == User.Identity.Name);
-            //Находим в бд кошелек пользователя
-            var wallets = _dataContext.Wallets.ToList();
-            Wallet currentWallet = wallets.FirstOrDefault(p => p.UserId == currentUser.Id);
-            //Добавляем на счет пользователя необходимое колиечество средств
-            currentWallet.TotalSum += model.AddedSum;
+            //Пополняем кошелек
+            currentUser.Wallet.TotalSum += model.AddedSum;
             _dataContext.SaveChanges();
             return View();
         }
