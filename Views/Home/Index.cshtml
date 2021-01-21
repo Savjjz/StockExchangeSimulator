@@ -1,7 +1,34 @@
-﻿@model IEnumerable<DataLayer.Entityes.Stock>
+﻿@using StockExchangeSimulator.Models
+@model StockExchangeSimulator.ViewModels.IndexViewModel
 @{
     ViewData["Title"] = "Home Page";
 }
+<style>
+    @@font-face {
+        font-family: 'FontAwesome';
+        src: url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff2') format('woff2'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/fonts/fontawesome-webfont.woff') format('woff'), url('https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/fonts/fontawesome-webfont.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal
+    }
+
+    .glyphicon {
+        display: inline-block;
+        font: normal normal normal 14px/1 FontAwesome;
+        font-size: inherit;
+        text-rendering: auto;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale
+    }
+
+    .glyphicon-chevron-right:before {
+        content: "\f054";
+    }
+
+    .glyphicon-chevron-left:before {
+        content: "\f053";
+    }
+</style>
+
 
 <!DOCTYPE html>
 <html>
@@ -13,31 +40,78 @@
     <p>
         <input maxlength="25" size="30" />
         <input type="button" value="поиск" />
-        <select size="1">
-            <option disabled>Сортировать по</option>
-            <option>Странам</option>
-            <option>Цене</option>
-            <option>Доходности</option>
-        </select>
     </p>
+    <form method="get">
+        <div class="form-inline">
+            <label>Название компании: </label>
+            <input name="name" value="@Model.FilterViewModel.SelectedName" class="form-control" />
+            <label class="custom-control-label">Страна: </label>
+            <select name="country" asp-items="Model.FilterViewModel.Countries" class="form-control"></select>
+            <input type="submit" value="Фильтр" class="btn btn-outline-dark" />
+        </div>
+    </form>
     <table class="StockList">
         <tr>
-            <td>Компания</td>
-            <td>Краткое название</td>
-            <td>Страна</td>
-            <td>Текущая цена</td>
-            <td>Доходность за 1 год</td>
+            <th>Компания</th>
+            <th>Краткое название</th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.CountrySort)"
+                   asp-route-country="@(Model.FilterViewModel.SelectedCountry)">Страна</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.PriceSort)"
+                   asp-route-country="@(Model.FilterViewModel.SelectedCountry)">Текущая цена</a>
+            </th>
+            <th>
+                <a asp-action="Index"
+                   asp-route-sortOrder="@(Model.SortViewModel.ProfitabilitySort)"
+                   asp-route-country="@(Model.FilterViewModel.SelectedCountry)">Доходность за 1 год</a>
+            </th>
         </tr>
-        @foreach (var stock in Model)
+        @foreach (var stock in Model.Stocks)
         {
             <tr>
-                <td><a class="nav-link text-dark" asp-controller="StockInfoController" asp-action="ShowStockInfo" asp-route-id="@stock.Id">@stock.Company.FullName</a></td>
+                <td>
+                    <a class="nav-link text-dark" asp-controller="StockInfoController" asp-action="ShowStockInfo" asp-route-id="@stock.Id">@stock.Company.FullName</a>
+                </td>
                 <td>@stock.Company.ShortName</td>
-                <td>@stock.Company.Country.Name</td>
-                <td>@stock.CurrentPrice</td>
-                <td>@stock.YearPorfitability</td>
+                <td>
+                    <a>@stock.Company.Country.Name</a>
+                </td>
+                <td>
+                    <a>@stock.CurrentPrice</a>
+                </td>
+                <td>
+                    <a>@stock.YearPorfitability</a>
+                </td>
             </tr>
         }
     </table>
+    @if (Model.PageViewModel.HasPreviousPage)
+    {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber - 1)"
+           asp-route-name="@(Model.FilterViewModel.SelectedName)"
+           asp-route-company="@(Model.FilterViewModel.SelectedCountry)"
+           asp-route-sortorder="@(Model.SortViewModel.Current)"
+           class="btn  btn-outline-dark">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            Назад
+        </a>
+    }
+    @if (Model.PageViewModel.HasNextPage)
+    {
+        <a asp-action="Index"
+           asp-route-page="@(Model.PageViewModel.PageNumber + 1)"
+           asp-route-name="@(Model.FilterViewModel.SelectedName)"
+           asp-route-company="@(Model.FilterViewModel.SelectedCountry)"
+           asp-route-sortorder="@(Model.SortViewModel.Current)"
+           class="btn btn-outline-dark">
+            Вперед
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </a>
+    }
 </body>
 </html>
